@@ -5,6 +5,9 @@ from django.utils.timezone import localtime
 from django.shortcuts import get_object_or_404
 
 
+MINUTES_PER_HOUR = 60
+
+
 def get_duration(visit):
     time_now = localtime()
     entry_time = localtime(visit.entered_at)
@@ -13,14 +16,14 @@ def get_duration(visit):
         delta = leaved_time-entry_time
     else:
         delta = time_now-entry_time
-    minutes = round(delta.total_seconds()/60)
+    minutes = round(delta.total_seconds()/MINUTES_PER_HOUR)
     return minutes
 
 
 
 def format_duration(minutes):
-    hours = minutes // 60
-    remaining_minutes = minutes-hours*60
+    hours = minutes // MINUTES_PER_HOUR
+    remaining_minutes = minutes-hours*MINUTES_PER_HOUR
     return f'{hours}ч {remaining_minutes}мин'
 
 

@@ -1,36 +1,7 @@
-from datacenter.models import Passcard
-from datacenter.models import Visit
+from datacenter.models import Passcard, Visit
 from django.shortcuts import render
-from django.utils.timezone import localtime
 from django.shortcuts import get_object_or_404
-
-
-MINUTES_PER_HOUR = 60
-
-
-def get_duration(visit):
-    time_now = localtime()
-    entry_time = localtime(visit.entered_at)
-    leaved_time = localtime(visit.leaved_at)
-    if leaved_time:
-        delta = leaved_time-entry_time
-    else:
-        delta = time_now-entry_time
-    minutes = round(delta.total_seconds()/MINUTES_PER_HOUR)
-    return minutes
-
-
-
-def format_duration(minutes):
-    hours = minutes // MINUTES_PER_HOUR
-    remaining_minutes = minutes-hours*MINUTES_PER_HOUR
-    return f'{hours}ч {remaining_minutes}мин'
-
-
-def is_visit_long(visit_time, minutes=60):
-    hours = visit_time/minutes
-    suspicion = hours>1
-    return suspicion
+from .tools import get_duration, format_duration, is_visit_long
 
 
 def passcard_info_view(request, passcode):
@@ -40,14 +11,14 @@ def passcard_info_view(request, passcode):
     this_passcard_visits = []
 
     for visit in visits:
-        minutes = get_duration(visit)
+        seconds = get_duration(visit)
 
-        duration = format_duration(minutes)
+        duration = format_duration(seconds)
 
         this_passcard_visits.append({
             'entered_at': visit.entered_at,
             'duration': duration,
-            'is_strange': is_visit_long(minutes),
+            'is_strange': is_visit_long(seconds),
         })
 
     context = {

@@ -29,10 +29,8 @@ def format_duration(minutes):
 
 def is_visit_long(visit_time, minutes=60):
     hours = visit_time/minutes
-    if hours>1:
-        return True
-    else:
-        return False
+    suspicion = hours>1
+    return suspicion
 
 
 def passcard_info_view(request, passcode):

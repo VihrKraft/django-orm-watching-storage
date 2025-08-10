@@ -10,14 +10,14 @@ def storage_information_view(request):
 
     for visit in visits:
         entry_time = localtime(visit.entered_at)
-        seconds = get_duration(visit)
-        duration = format_duration(seconds)
+        duration = get_duration(visit)
+        formatted_duration = format_duration(duration)
         visitor_name = visit.passcard
 
         non_closed_visits.append({
             'who_entered': visitor_name,
             'entered_at': entry_time,
-            'duration': duration,
+            'duration': formatted_duration,
         })
 
     context = {

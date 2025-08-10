@@ -1,6 +1,11 @@
 from django.utils.timezone import localtime
 
 
+SECONDS_PER_MINUTE = 60
+SECONDS_PER_HOUR = 3600
+SUSPICIOUS_TIME = 1
+
+
 def get_duration(visit):
     time_now = localtime()
     entry_time = localtime(visit.entered_at)
@@ -14,13 +19,13 @@ def get_duration(visit):
 
 
 def format_duration(all_seconds):
-    hours = all_seconds // 3600
-    minutes = (all_seconds % 3600) // 60
-    seconds = all_seconds-(minutes*60+hours*3600)
+    hours = all_seconds // SECONDS_PER_HOUR
+    minutes = (all_seconds % SECONDS_PER_HOUR) // SECONDS_PER_MINUTE
+    seconds = all_seconds-(minutes*SECONDS_PER_MINUTE+hours*SECONDS_PER_HOUR)
     return f'{hours}ч {minutes}мин {seconds}сек'
 
 
 def is_visit_long(visit_time, minutes=60):
-    hours = (visit_time/60)/minutes
-    suspicion = hours>1
+    hours = (visit_time/SECONDS_PER_MINUTE)/minutes
+    suspicion = hours>SUSPICIOUS_TIME
     return suspicion

@@ -19,7 +19,7 @@ def storage_information_view(request):
             'entered_at': entry_time,
             'duration': duration,
         })
-    
+
     context = {
         'non_closed_visits': non_closed_visits,
     }

@@ -27,5 +27,5 @@ def format_duration(all_seconds):
 
 def is_visit_long(visit_time, minutes=60):
     hours = (visit_time/SECONDS_PER_MINUTE)/minutes
-    suspicion = hours>SUSPICIOUS_TIME
+    suspicion = hours > SUSPICIOUS_TIME
     return suspicion
